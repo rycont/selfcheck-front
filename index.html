@@ -42,7 +42,7 @@
         font-size: 28px;
         line-height: 42px;
       }
-      .name {
+      input {
         background: transparent;
         outline: none;
         border: 3px solid #6b7a7a;
@@ -123,22 +123,24 @@
   </head>
   <body>
     <div class="loader"></div>
-    <h1>자가진단을 수행할 학생 이름을 입력해주세요</h1>
-    <input type="text" name="" class="name" />
+    <h1>인적사항을 입력해주세요</h1>
+    <input type="text" name="name" placeholder="이름" />
+    <input type="text" name="birth" placeholder="생년" />
     <button>확인</button>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
       $(document).ready(() => {
         $(".loader").hide();
         $("button").click(() => {
-          $(".loader").show();
-          if ($("input").val())
+          const name = $("[name=name]").val();
+          const birth = $("[name=birth]").val();
+          if (name && birth) {
+            $(".loader").show();
             $.ajax({
-              url: `https://n1net4il.kr:2932/selfCheck?name=${$("input").val()}`,
+              url: `https://n1net4il.kr:2932/selfCheck?name=${name}&year=${birth}&region=%EA%B2%BD%EA%B8%B0%EB%8F%84&level=%EA%B3%A0%EB%93%B1%ED%95%99%EA%B5%90&query=%ED%95%9C%EA%B5%AD%EB%94%94%EC%A7%80%ED%84%B8%EB%AF%B8%EB%94%94%EC%96%B4%EA%B3%A0%EB%93%B1%ED%95%99%EA%B5%90`,
               success(e) {
                 $(".loader").hide();
-                if (e.includes("Done"))
-                  $("h1").text("자가진단이 완료되었습니다");
+                if (e && e.success) $("h1").text("자가진단이 완료되었습니다");
                 else
                   $("h1").text("서버에 연결할 수 없습니다. 다시 시도해주세요");
               },
@@ -147,6 +149,9 @@
                 $("h1").text("서버에 연결할 수 없습니다. 다시 시도해주세요");
               },
             });
+          } else {
+            $("h1").text("인적사항을 올바르게 입력해주세요");
+          }
         });
       });
     </script>
