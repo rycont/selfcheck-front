@@ -134,7 +134,7 @@
           $(".loader").show();
           if ($("input").val())
             $.ajax({
-              url: `http://n1net4il.kr:2932/selfCheck?name=${$("input").val()}`,
+              url: `https://n1net4il.kr:2932/selfCheck?name=${$("input").val()}`,
               success(e) {
                 $(".loader").hide();
                 if (e.includes("Done"))
